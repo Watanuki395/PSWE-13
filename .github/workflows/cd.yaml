@@ -16,15 +16,15 @@ jobs:
     - name: Pull Docker image
       run: docker pull xgera/babyflask:latest
       # Agregar registro para verificar si se ha descargado la imagen correctamente
-      - name: Check Docker image
-        run: docker images
+    - name: Check Docker image
+      run: docker images
     - name: Delete Old Docker Container
       run: docker rm -f babyflask || true
       # Agregar registro para verificar si se ha eliminado el contenedor correctamente
-      - name: Check Docker container
-        run: docker ps -a
+    - name: Check Docker container
+      run: docker ps -a
     - name: Run Docker Container
       run: docker run -d -p 5000:5000 -e SUPABASE_URL=${{ secrets.SUPABASE_URL }} -e SUPABASE_KEY=${{ secrets.SUPABASE_KEY }} --name babyflask xgera/babyflask:latest
       # Agregar registro para verificar si se ha iniciado el contenedor correctamente
-      - name: Check Docker container status
-        run: docker ps
+    - name: Check Docker container status
+      run: docker ps

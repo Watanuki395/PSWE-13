@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import os
 from flask import g
 from werkzeug.local import LocalProxy

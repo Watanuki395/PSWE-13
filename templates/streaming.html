@@ -4,31 +4,65 @@
 
 {% block content %}
 <div class="w-full max-w-lg">
-    <video id="video" class="w-full" autoplay></video>
-    <div class="mt-4 flex justify-center">
-        <button id="startButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Start Streaming</button>
-        <button id="stopButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Stop Streaming</button>
-    </div>
+    <div class="container">
+        <div class="videos">
+          <video id="localVideo" autoplay></video>
+        </div>
+        <div id="chat" class="chat">
+          <input type="file" id="image" placeholder="Add an image..." accept="image/*" />
+          <input id="announcement" type="text" placeholder="Make an anoouncement..." />
+          <button id="announcementBtn">Announce</button>
+          <button id="qrBtn">Make QR</button>
+          <button id="clsAnnouncementBtn">Clear</button>
+          <input id="chatText" type="text" placeholder="Write a message..." />
+          <button id="chatBtn">Send</button>
+        </div>
+        <div class="mt-4 flex justify-center">
+            <button id="startButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Start Streaming</button>
+            <button id="stopButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Stop Streaming</button>
+        </div>
+      </div>
 </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script src="{{ url_for('static', filename='track-utils.js') }}"></script>
 <script>
-    const videoElement = document.getElementById('video');
+    const localVideo  = document.getElementById('localVideo');
+    const announcement = document.getElementById('announcement');
+    const announcementBtn = document.getElementById('announcementBtn');
     const startButton = document.getElementById('startButton');
     const stopButton = document.getElementById('stopButton');
+    let transformFn;
 
     // Función para capturar el video del cliente
     async function captureVideo() {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoElement.srcObject = stream;
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: true })
+        .then((stream) => {
+        /* use the stream */
+        transformFn = cleanStream();
+
+        const pTrack = createProcessedTrack({
+          track: stream.getVideoTracks()[0],
+          transform: (frame, controller) => transformFn(frame, controller)
+        });
+
+        localVideo.srcObject = new MediaStream([pTrack]);
+        styleVideos();
+        startSignaling('p');
+      })
+      .catch((err) => {
+        /* handle the error */
+        console.error("An error occurred:", err)
+      });
     }
 
     // Función para detener la captura de video
     function stopCapture() {
-        const stream = videoElement.srcObject;
+        const stream = localVideo.srcObject;
         const tracks = stream.getTracks();
 
         tracks.forEach(track => track.stop());
-        videoElement.srcObject = null;
+        localVideo.srcObject = null;
     }
 
     startButton.addEventListener('click', () => {
@@ -37,6 +71,33 @@
 
     stopButton.addEventListener('click', () => {
         stopCapture();
+    });
+
+    announcementBtn.addEventListener('click', () => {
+      transformFn = showText({
+        text: announcement.value,
+        txtInitialX: localVideo.
+          srcObject.
+          getVideoTracks()[0].
+          getSettings()['width']
+      });
+      image.value = '';
+    });
+
+    clsAnnouncementBtn.addEventListener('click', () => {
+      transformFn = cleanStream();
+      announcement.value = '';
+      image.value = '';
+    });
+
+    image.addEventListener('change', () => {
+      transformFn = showImage({image: image.files[0]});
+      announcement.value = '';
+    });
+
+    qrBtn.addEventListener('click', () => {
+      transformFn = showQr({ text: announcement.value });
+      image.value = '';
     });
 </script>
 {% endblock %}

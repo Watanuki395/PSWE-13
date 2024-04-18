@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block title %}Video Streaming watcher{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-lg">
+    <h1>Live Video Processing</h1>
+    <button id="join" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Join</button>
+    <div class="container">
+        <div class="videos"></div>
+        <div id="chat" class="chat">
+          <input id="chatText" type="text" placeholder="Write a message..." />
+          <button id="chatBtn">Send</button>
+        </div>
+      </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+<script>
+    const btn = document.getElementById('join');
+
+    btn.addEventListener('click', () => {
+      btn.style.display = 'none';
+      startSignaling('v');
+    });
+  </script>
+{% endblock %}

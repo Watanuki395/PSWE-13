@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Response, request, redirect, session, abort, g
 import cv2
 from flask_misaka import Misaka
+from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from src.supabase import (
     supabase,
@@ -12,6 +13,7 @@ from src.auth import auth
 
 
 app = Flask(__name__, template_folder="./templates", static_folder="./static")
+CORS(app)
 Misaka(app)
 socketio = SocketIO(app)
 

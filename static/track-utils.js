@@ -23,8 +23,8 @@ function createProcessedTrack({ track, transform }) {
     txtColor = 'white',
     txtFontSize = '48px',
     txtFont = 'serif',
-    textSpeed = 2,
-    bgColor = '#08b9a6',
+    textSpeed = 4,
+    bgColor = '#C70039',
     bgPadding = 10,
     position = 'top'
   }) {

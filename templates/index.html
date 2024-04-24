@@ -9,12 +9,12 @@
     <!-- Agregar estilos personalizados si es necesario -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-300">
 
     {% include 'navbar.html' %}
 
     <!-- Content -->
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8 flex items-center justify-center">
         {% block content %}
         {% endblock %}
     </div>

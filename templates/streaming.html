@@ -3,10 +3,10 @@
 {% block title %}Video Streaming Live{% endblock %}
 
 {% block content %}
-<div class="w-full max-w-lg bg-gray-100 p-4 rounded-lg shadow-lg">
-  <div class="container mx-auto">
-      <div class="videos relative">
-          <video id="localVideo" width="480" height="360" autoplay muted></video>
+<div class="w-full max-w-xlg bg-gray-200 p-4 rounded-lg shadow-lg justify-center items-center">
+  <div class="container mx-auto flex flex-col justify-center items-center">
+      <div class="videos relative justify-center items-center">
+          <video id="localVideo" autoplay muted></video>
         </div>
       <div id="chat" class="mt-4">
           <input type="file" id="image" placeholder="Add an image..." accept="image/*" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
@@ -37,6 +37,7 @@
     const startButton = document.getElementById('startButton');
     const stopButton = document.getElementById('stopButton');
     let transformFn;
+    let showMessage = false;
 
     // Función para capturar el video del cliente
     async function captureVideo() {
@@ -73,7 +74,7 @@
       const canvas = faceapi.createCanvasFromMedia(localVideo);
       canvas.classList.add('absolute', 'top-0', 'left-0'); 
       videoContainer.appendChild(canvas);
-      const displaySize = { width: localVideo.width, height: localVideo.height }
+      const displaySize = { width: localVideo.videoWidth, height: localVideo.videoHeight }
       faceapi.matchDimensions(canvas, displaySize)
       setInterval(async () => {
         const detections = await faceapi.detectAllFaces(localVideo, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
@@ -84,9 +85,12 @@
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
         detections.forEach(result => {
             const expressions = result.expressions;
-            if (expressions && expressions.sad > 0.7) { 
-                console.log('La persona está triste.');
+            if (expressions && expressions.angry > 0.7 ||  expressions.sad > 0.7 ||  expressions.disgusted > 0.7) { 
+              announcementEmotion(`URGENTE: Revisar el bebe`);
             }
+            // if(expressions && expressions.happy > 0.7){
+            //   announcementClear();
+            // }
         });
       }, 200)
     });
@@ -116,6 +120,28 @@
         //stopCapture();
         location.reload();
     });
+
+    function announcementEmotion(textVal){
+      if(!showMessage){
+        transformFn = showText({
+        text: textVal,
+        txtInitialX: localVideo.
+          srcObject.
+          getVideoTracks()[0].
+          getSettings()['width']
+      });
+      image.value = '';
+    }
+    };
+
+
+    function announcementClear(){
+      transformFn = cleanStream();
+      announcement.value = '';
+      image.value = '';
+      showMessage=false;
+    };
+
 
     announcementBtn.addEventListener('click', () => {
       transformFn = showText({

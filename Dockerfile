@@ -1,8 +1,12 @@
-# Usar la imagen de Python 3.12.2 en Debian
-FROM python:3.12.2
+# Etapa de construcción
+FROM python:3.12.2 AS builder
+
+# Actualizar pip
+RUN pip install --upgrade pip
 
 # Instalar dependencias necesarias para OpenCV y otras bibliotecas
 RUN apt-get update && apt-get install -y libgl1-mesa-glx
+
 
 # Establecer el directorio de trabajo en /app
 WORKDIR /app
@@ -12,8 +16,6 @@ COPY . /app
 
 # Instalar las dependencias de la aplicación
 RUN pip install --no-cache-dir -r requirements.txt
-
-RUN pip install opencv-python
 
 # Exponer el puerto 5000
 EXPOSE 5000

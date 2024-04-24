@@ -11,17 +11,31 @@
         <div id="chat" class="chat">
           <input id="chatText" type="text" placeholder="Write a message..." />
           <button id="chatBtn">Send</button>
+          <button id="stopButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" >Stop Streaming</button>
+
         </div>
       </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script src="{{ url_for('static', filename='main.js') }}"></script>
 <script>
+    const socket = io();
     const btn = document.getElementById('join');
+    const stopButton = document.getElementById('stopButton');
 
     btn.addEventListener('click', () => {
       btn.style.display = 'none';
+      stopButton.style.display = 'true'
+      //styleVideos();
       startSignaling('v');
     });
+
+
+    stopButton.addEventListener('click', () => {
+        socket.disconnect();
+        location.reload();
+    });
+
+
   </script>
 {% endblock %}

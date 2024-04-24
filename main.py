@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Response, request, redirect, session, abort, g
-import cv2
+# import cv2
 from flask_misaka import Misaka
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
@@ -26,7 +26,6 @@ app.register_blueprint(auth)
 @socketio.on('connect')
 def handle_connect():
     print(f"A user connected to the server: {request.sid}")
-
     # Emit a 'join' event to all clients except the current one
     emit('event', {'type': 'join', 'from': request.sid, 'role': request.args.get('role')}, broadcast=True, include_self=False)
 
@@ -42,30 +41,9 @@ def handle_event(evt):
 @socketio.on('disconnect')
 def handle_disconnect():
     print(f"A user is leaving: {request.sid}")
-
     # Emit a 'bye' event to all clients except the current one
     emit('event', {'type': 'bye', 'from': request.sid}, broadcast=True, include_self=False)
 
-
-def generate_frames():
-    if not camera.isOpened():
-        raise RuntimeError("Error al abrir la cámara.")
-
-    while True:
-        success, frame = camera.read()
-        if not success:
-            break
-
-        ret, buffer = cv2.imencode('.jpg', frame)
-        if not ret:
-            raise RuntimeError("Error al codificar el frame.")
-
-        frame_bytes = buffer.tobytes()
-
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-
-    camera.release()
 
 @app.teardown_appcontext
 def close_supabase(e=None):
@@ -87,9 +65,6 @@ def watcher():
     print(session)
     return render_template('watcher.html')
 
-@app.route('/video')
-def video():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route("/dashboard")
 @login_required
@@ -100,5 +75,4 @@ def dashboard():
     return render_template("dashboard.html", profile=profile)
 
 if __name__ == "__main__":
-    camera = cv2.VideoCapture(0)
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

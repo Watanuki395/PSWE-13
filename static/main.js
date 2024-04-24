@@ -23,7 +23,7 @@ chatBtn.addEventListener('click', () => {
   chatText.focus();
 });
 
-function startSignaling(myRole) {
+async function startSignaling(myRole) {
   const socket = io({
     query: {
       role: myRole
@@ -33,7 +33,8 @@ function startSignaling(myRole) {
   socket.on('connect', () => {
     console.log('My id is:', socket.id);
     myId = socket.id
-  })
+    return myId
+  });
 
   socket.on('event', evt => {
     switch (evt.type) {
@@ -156,27 +157,4 @@ function addChatMessage(message, textAlign = 'left') {
   
   el.appendChild(txtNode);
   chat.appendChild(el);
-}
-
-function styleVideos() {
-  const videosGrid = document.querySelector('.videos');
-  const videos = videosGrid.querySelectorAll('video');
-
-  if (videos.length === 1) {
-    videos[0].style.gridRow = '1 / span 2';
-    videos[0].style.gridColumn = '1 / span 2';
-  } else if (videos.length === 2) {
-    videos[0].style.gridRow = '1 / span 2';
-    videos[0].style.gridColumn = '1 / span 1';
-    videos[1].style.gridRow = '1 / span 2';
-    videos[1].style.gridColumn = '2 / span 1';
-  } else if (videos.length >= 3) {
-    if (videos.length > 4) {
-      videosGrid.style.gridTemplateColumns = `repeat(${Math.ceil(videos.length / 2)}, 1fr)`;
-    }
-    videos.forEach((video, index) => {
-      video.style.gridRow = 'auto';
-      video.style.gridColumn = 'auto';
-    });
-  }
 }

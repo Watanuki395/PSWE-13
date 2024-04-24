@@ -82,7 +82,13 @@
         faceapi.draw.drawDetections(canvas, resizedDetections)
         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
-      }, 1000)
+        detections.forEach(result => {
+            const expressions = result.expressions;
+            if (expressions && expressions.sad > 0.7) { 
+                console.log('La persona está triste.');
+            }
+        });
+      }, 200)
     });
 
     // Función para detener la captura de video

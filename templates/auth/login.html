@@ -7,11 +7,13 @@
 <div class="w-full max-w-md mx-auto">
   {{ h.alert('mb-8') }}
   <div class="w-full max-w-xs mx-auto mt-20">
-    <div class="mb-6">
-      <img class="mx-auto h-auto w-auto" src="/static/imgs/babyLogo.png" alt="Logo">
-    </div>
+
     <div class="border-t border-gray-300 my-4"></div>
+
     <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="post" action="{{ url_for('auth.signin') }}">
+      <div class="mb-6 py-3 px-3 pb-8">
+        <img class="mx-auto h-auto w-auto" src="/static/imgs/babyLogo.png" alt="Logo">
+      </div>
       {% include 'auth/_form_partial.html' %}
       <a href="{{ url_for('auth.forgot_password') }}" class="text-pink-500 hover:underline">¿Olvidaste la Contraseña?</a>
       <div class="flex items-center py-8" >

@@ -6,21 +6,21 @@
 <div class="w-full max-w-xlg bg-gray-200 p-4 rounded-lg shadow-lg justify-center items-center">
   <div class="container mx-auto flex flex-col justify-center items-center">
       <div class="videos relative justify-center items-center">
-          <video id="localVideo" autoplay muted></video>
+          <video id="localVideo" autoplay muted class="bg-gray-600"></video>
         </div>
-      <div id="chat" class="mt-4">
-          <input type="file" id="image" placeholder="Add an image..." accept="image/*" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
-          <input id="announcement" type="text" placeholder="Make an announcement..." class="w-full mt-2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
-          <button id="announcementBtn" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Announce</button>
-          <button id="qrBtn" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Make QR</button>
-          <button id="clsAnnouncementBtn" class="mt-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Clear</button>
-          <input id="chatText" type="text" placeholder="Write a message..." class="w-full mt-2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
-          <button id="chatBtn" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Send</button>
-      </div>
       <div class="mt-4 flex justify-center">
-          <button id="startButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-4">Start Streaming</button>
-          <button id="stopButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">Stop Streaming</button>
+          <button id="clsAnnouncementBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 mr-4 rounded-lg hidden">Limpiar Mensaje</button>
+          <button id="startButton" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg mr-4">Comenzar Video</button>
+          <button id="stopButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mr-4 rounded-lg hidden">Detener Video</button>
       </div>
+      <div id="chat" class="mt-4">
+        <!-- <input type="file" id="image" placeholder="Add an image..." accept="image/*" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"> -->
+        <!-- <input id="announcement" type="text" placeholder="Make an announcement..." class="w-full mt-2 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"> -->
+        <!-- <button id="announcementBtn" class="mt-2 bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg">Announce</button> -->
+        <!-- <button id="qrBtn" class="mt-2 bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg">Make QR</button> -->
+        <input id="chatText" type="text" placeholder="Escribe un mensage" class="w-full mt-2 px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500">
+        <button id="chatBtn" class="mt-2 bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg">Enviar</button>
+    </div>
   </div>
 </div>
 
@@ -36,6 +36,7 @@
     const announcementBtn = document.getElementById('announcementBtn');
     const startButton = document.getElementById('startButton');
     const stopButton = document.getElementById('stopButton');
+    const clsAnnouncementBtn = document.getElementById('clsAnnouncementBtn');
     let transformFn;
     let showMessage = false;
 
@@ -59,7 +60,6 @@
               });
 
               localVideo.srcObject = new MediaStream([pTrack]);
-              //styleVideos();
               startSignaling('p');
             })
             .catch((err) => {
@@ -85,14 +85,11 @@
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
         detections.forEach(result => {
             const expressions = result.expressions;
-            if (expressions && expressions.angry > 0.7 ||  expressions.sad > 0.7 ||  expressions.disgusted > 0.7) { 
+            if (expressions && expressions.angry > 0.8 ||  expressions.sad > 0.8 ||  expressions.disgusted > 0.8) { 
               announcementEmotion(`URGENTE: Revisar el bebe`);
             }
-            // if(expressions && expressions.happy > 0.7){
-            //   announcementClear();
-            // }
         });
-      }, 200)
+      }, 100)
     });
 
     // Función para detener la captura de video
@@ -112,12 +109,16 @@
 
     startButton.addEventListener('click', () => {
         captureVideo();
-        startButton.style.display = 'none';
+        startButton.classList.add('hidden');
+        stopButton.classList.remove('hidden');
+        clsAnnouncementBtn.classList.remove('hidden');
     });
 
     stopButton.addEventListener('click', () => {
       socket.disconnect();
-        //stopCapture();
+        startButton.classList.remove('hidden');
+        stopButton.classList.add('hidden');
+        clsAnnouncementBtn.classList.add('hidden');
         location.reload();
     });
 

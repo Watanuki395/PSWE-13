@@ -52,9 +52,14 @@ def close_supabase(e=None):
 
 @app.route('/')
 def home():
-        return render_template("auth/login.html", form=form, next=next)
+    next = request.args.get("next")
+    form = AuthForm()
+    return render_template("auth/login.html", form=form, next=next)
 
 @app.route('/stream-video')
+@login_required
+@password_update_required
+@profile_required
 def stream():
     session = supabase.auth.refresh_session
     print(session)
@@ -74,6 +79,17 @@ def watcher():
 def dashboard():
     profile = get_profile_by_user()
     return render_template("dashboard.html", profile=profile)
+
+@app.route("/profile")
+@login_required
+@password_update_required
+@profile_required
+def profile():
+    profile = get_profile_by_user()
+    print(profile)
+    return render_template("profile.html", profile=profile)
+
+
 
 if __name__ == "__main__":
      socketio.run(app, host='0.0.0.0', port=5000, debug=True)

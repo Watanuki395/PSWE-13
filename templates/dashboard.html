@@ -4,25 +4,36 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-  <div class="card w-4/12 bg-base-100 shadow-xl">
-    <div class="card-body">
-      <h2 class="card-title">Welcome {{ profile.display_name or user.email }}</h2>
-      {% if profile.display_name %}
-        <p>
-          Name: {{ profile.first_name }}
-          {{ profile.last_name }}
-        </p>
-        <p>Display Name: {{ profile.display_name }}</p>
-        <p>Dob: {{ profile.dob }}</p>
-        <p>Location: {{ profile.profile_location }}</p>
-        <h3 class="text-lg font-semibold mt-2">Bio</h3>
-        <p>{{ profile.bio }}</p>
-        <p class="text-right">
-          <a href="{{ h.generate_url(profile.slug) }}" class="btn btn-md btn-outline">
-            View Profile
-          </a>
-        </p>
-      {% endif %}
+<div class=" flex flex-col justify-between items-center">
+  <h1 class="text-2xl font-bold text-blue-500 p-4">¡Bienvenido, {{ user.email }}!</h1>
+
+  <!-- Cuadro de mensaje -->
+  <div class="bg-white rounded p-4 m-4 shadow-lg flex  flex-col items-center">
+    <div class="flex items-center items-center">
+      <img class="rounded-full" src="/static/imgs/phoneSVG.svg" alt="phone image 1">
+      <img class="rounded-full" src="/static/imgs/phoneSVG.svg" alt="phone image 2">
+    </div>
+    <div class="flex flex-col items-center">
+      <p class="text-gray-700">Asegúrate de tener el BabysitterCam en ambos dispositivos.</p>
+      <a href="#" class="text-pink-500 font-bold hover:bg-red-400 hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline">Compartir Enlace</a>
     </div>
   </div>
+
+  <!-- Otros dos recuadros -->
+  <div class="flex justify-around">
+    <!-- Recuadro 1 -->
+    <div class="bg-blue-300 rounded-3xl p-4 m-4 shadow-lg flex flex-col items-center">
+      <img class="rounded-full" src="/static/imgs/babySVG.svg" alt="imagen de bebe">
+      <p class="text-white font-bold">Bebé</p>
+      <a href="stream-video" class="text-pink-500 font-bold hover:bg-red-400 hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline">Transmitir en vivo</a>
+    </div>
+
+    <!-- Recuadro 2 -->
+    <div class="bg-blue-300 rounded-3xl p-4 m-4 shadow-lg flex flex-col items-center">
+      <img class="rounded-full" src="/static/imgs/parentSVG.svg" alt="imagen de padres">
+      <p class="text-white font-bold">Padres</p>
+      <a href="watcher" class="text-pink-500 font-bold hover:bg-red-400 hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline">Monitorear a tu bebé</a>
+    </div>
+  </div>
+</div>
 {% endblock %}

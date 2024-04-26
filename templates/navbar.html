@@ -1,12 +1,15 @@
 {% if user %}
   {% set navigation_bar = [
     ('stream', 'Streaming'),
-    ('auth.signout', 'Salir')
+    ('dashboard', 'Dashboard'),
+    ('profile', 'Perfil')
   ] %}
+  {% set logout_button = 'auth.signout' %}
 {% else %}
   {% set navigation_bar = [
     ('auth.signin', 'Iniciar sesión')
   ] %}
+  {% set logout_button = '' %}
 {% endif %}
 
 {% set active_page = active_page|default('index') %}
@@ -14,14 +17,18 @@
 {% block body %}
   <!-- Navbar -->
   <nav class="bg-pink-500 p-4 text-gray-300 flex justify-between items-center">
-    {% for id, caption in navigation_bar %}
-      {% if id == 'auth.signout' %}
-        <form action="{{ url_for(id) }}" method="post">
-          <button class="text-white text-lg font-bold bg-red-600 hover:bg-red-700 py-2 px-4 rounded focus:outline-none focus:shadow-outline">{{ caption }}</button>
-        </form>
-      {% else %}
+    <div>
+      {% for id, caption in navigation_bar %}
         <a class="text-gray-300 text-lg font-bold hover:bg-pink-700 py-2 px-4 rounded focus:outline-none focus:shadow-outline {{ 'bg-pink-700' if active_page == id else '' }}" href="{{ url_for(id) }}">{{ caption }}</a>
-      {% endif %}
-    {% endfor %}
+      {% endfor %}
+    </div>
+
+    {% if logout_button %}
+      <div>
+        <form action="{{ url_for(logout_button) }}" method="post">
+          <button class="text-white text-lg font-bold bg-red-600 hover:bg-red-700 py-2 px-4 rounded focus:outline-none focus:shadow-outline">Salir</button>
+        </form>
+      </div>
+    {% endif %}
   </nav>
 {% endblock %}

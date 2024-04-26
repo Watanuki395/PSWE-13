@@ -78,7 +78,7 @@ async function startSignaling(myRole) {
           videoElement.removeAttribute('srcObject'); // empty source
           videoElement.load();
           videoElement.remove();
-          styleVideos();
+          //styleVideos();
         }
         if (rtcPeerConnections[evt.from]) {
           rtcPeerConnections[evt.from].close();
@@ -140,7 +140,7 @@ async function startSignaling(myRole) {
     remoteVideo.srcObject = new MediaStream([event.track]);
     document.getElementsByClassName('videos')[0].appendChild(remoteVideo);
 
-    styleVideos();
+    //styleVideos();
   }
 }
 

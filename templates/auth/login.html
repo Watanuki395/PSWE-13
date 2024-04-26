@@ -6,22 +6,28 @@
 {% block content %}
 <div class="w-full max-w-md mx-auto">
   {{ h.alert('mb-8') }}
-    <h2 class="text-3xl font-semibold mb-4">Sign in</h2>
+  <div class="w-full max-w-xs mx-auto mt-20">
+    <div class="mb-6">
+      <img class="mx-auto h-auto w-auto" src="/static/imgs/babyLogo.png" alt="Logo">
+    </div>
     <div class="border-t border-gray-300 my-4"></div>
-    <form method="post" action="{{ url_for('auth.signin') }}">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="post" action="{{ url_for('auth.signin') }}">
       {% include 'auth/_form_partial.html' %}
-      <div class="flex items-center justify-between py-8" >
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Sign in
+      <a href="{{ url_for('auth.forgot_password') }}" class="text-pink-500 hover:underline">¿Olvidaste la Contraseña?</a>
+      <div class="flex items-center py-8" >
+        <button type="submit"  class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline w-full" >
+          Ingresar
         </button>
-        <a href="{{ url_for('auth.forgot_password') }}" class="text-blue-500 hover:underline">Forgot Password?</a>
+       
+      </div>
+      <div class="mt-4 text-center">
+        ¿No tienes una cuenta? <a href="{{ url_for('auth.signup') }}" class="text-pink-500 hover:underline">Registrarte</a>
       </div>
     </form>
-    <div class="mt-4 text-center">
-      Not registered yet? <a href="{{ url_for('auth.signup') }}" class="text-blue-500 hover:underline">Create an account</a>
-    </div>
-
+    
+  </div>
 </div>
+
 {% endblock %}
 
 

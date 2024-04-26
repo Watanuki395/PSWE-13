@@ -9,16 +9,18 @@
     <!-- Agregar estilos personalizados si es necesario -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body class="bg-gray-300">
+<body class="bg-gray-300 flex flex-col min-h-screen">
 
     {% include 'navbar.html' %}
 
     <!-- Content -->
     <div class="container mx-auto px-4 py-8 flex items-center justify-center">
         {% block content %}
-        {% endblock %}
-    </div>
 
+        {% endblock %}
+
+    </div>
+    {% include 'auth/footer.html' %}
     <!-- Script to toggle theme -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response, request, redirect, session, abort, g
 # import cv2
+from src.forms import AuthForm, ForgotPasswordForm, VerifyTokenForm
 from flask_misaka import Misaka
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
@@ -51,7 +52,7 @@ def close_supabase(e=None):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+        return render_template("auth/login.html", form=form, next=next)
 
 @app.route('/stream-video')
 def stream():

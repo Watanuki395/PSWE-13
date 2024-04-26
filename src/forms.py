@@ -12,16 +12,16 @@ from wtforms.validators import Email, InputRequired, Length, EqualTo, Optional
 
 class AuthForm(FlaskForm):
     email = EmailField(
-        "Email", validators=[InputRequired("Email is required."), Email()]
+        "Email", validators=[InputRequired("Email is required."), Email()], render_kw={"placeholder": "Correo electrónico"}
     )
     password = PasswordField(
-        "Password", validators=[InputRequired("Password is required."), Length(min=6)]
+        "Contraseña", validators=[InputRequired("Password is required."), Length(min=6)], render_kw={"placeholder": "Tu Contraseña"}
     )
 
 
 class ForgotPasswordForm(FlaskForm):
     email = EmailField(
-        "Email", validators=[InputRequired("Email is required."), Email()]
+        "Email", validators=[InputRequired("Email is required."), Email()], render_kw={"placeholder": "Correo electrónico"}
     )
 
 

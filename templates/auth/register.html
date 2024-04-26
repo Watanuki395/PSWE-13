@@ -6,17 +6,17 @@
 {% block content %}
 <div class="w-full max-w-md mx-auto">
   {{ h.alert('mb-8') }}
-  <h2 class="text-3xl font-semibold mb-4">Create an account</h2>
-  <p class="text-gray-600 mb-4">Let's get started</p>
+  <h2 class="font-semibold text-4xl mb-4 text-blue-400">Registrarse</h2>
+
   <div class="border-t border-gray-300 my-4"></div>
-  <form action="{{ url_for('auth.signup') }}" method="post" class="space-y-4">
+  <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="{{ url_for('auth.signup') }}" method="post" class="space-y-4">
     {% include 'auth/_form_partial.html' %}
     <div class="flex items-center justify-between py-8">
-      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Create account</button>
+      <button type="submit"  class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline w-full">Registrarse</button>
     </div>
   </form>
   <div class="pt-4 text-center">
-    Already have an account? <a href="{{ url_for('auth.signin') }}" class="underline text-blue-500">Sign In</a>
+    ¿Ya tienes una cuenta? <a href="{{ url_for('auth.signin') }}" class="underline text-blue-500">Inicia Sesion</a>
   </div>
 </div>
 {% endblock %}
